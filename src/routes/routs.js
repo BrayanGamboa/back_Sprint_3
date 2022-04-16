@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/marca", (req, res) => {
-  mysqlConnection.query(`SELECT * FROM marca;`, (err, rows, fields) => {
+  mysqlConnection.query(`SELECT * FROM marca;`, (err, rows) => {
     try {
       res.status(200).json(rows);
     } catch {
@@ -19,7 +19,7 @@ router.get("/marca", (req, res) => {
 });
 
 router.get("/vehiculo", (req, res) => {
-  mysqlConnection.query(`SELECT * FROM vehiculo;`, (err, rows, fields) => {
+  mysqlConnection.query(`SELECT * FROM vehiculo;`, (err, rows) => {
     try {
       res.status(200).json(rows);
     } catch {
@@ -30,7 +30,7 @@ router.get("/vehiculo", (req, res) => {
 });
 
 router.get("/linea", (req, res) => {
-  mysqlConnection.query(`SELECT * FROM linea;`, (err, rows, fields) => {
+  mysqlConnection.query(`SELECT * FROM linea;`, (err, rows) => {
     try {
       res.status(200).json(rows);
     } catch {
@@ -44,7 +44,7 @@ router.get("/marca/:nombre", (req, res) => {
   const { nombre } = req.params;
   mysqlConnection.query(
     `SELECT * FROM marca WHERE nombre = "${nombre}"`,
-    (err, rows, fields) => {
+    (err, rows) => {
       try {
         if (!rows[0]) {
           res.status(204).send("Sin datos");
@@ -63,7 +63,7 @@ router.get("/linea/:id", (req, res) => {
   const { id } = req.params;
   mysqlConnection.query(
     `SELECT * FROM linea WHERE id_linea = ${id}`,
-    (err, rows, fields) => {
+    (err, rows) => {
       try {
         if (!rows[0]) {
           res.status(204).send("Sin datos");
@@ -82,7 +82,7 @@ router.get("/vehiculo/:placa", (req, res) => {
   const { placa } = req.params;
   mysqlConnection.query(
     `SELECT * FROM vehiculo WHERE num_placa = "${placa}"`,
-    (err, rows, fields) => {
+    (err, rows) => {
       try {
         if (!rows[0]) {
           res.status(204).send("Sin datos");
@@ -102,11 +102,11 @@ router.delete("/marca_delete/:nombre", (req, res) => {
 
   mysqlConnection.query(
     `DELETE FROM marca WHERE nombre = "${nombre}"`,
-    (err, rows, fields) => {
+    (err) => {
       try {
         res.status(200).send("Borrado");
         console.log("Se han borrado");
-      } catch (err) {
+      } catch {
         res.status(500);
         console.log(err);
       }
@@ -118,7 +118,7 @@ router.delete("/linea_delete/:id", (req, res) => {
   const { id } = req.params;
   mysqlConnection.query(
     `DELETE FROM linea WHERE id_linea = ${id}`,
-    (err, rows, fields) => {
+    (err) => {
       try {
         res.status(200).send("Borrado");
         console.log("Se han borrado");
@@ -182,14 +182,6 @@ router.put("/vehiculo_update/:placa", (req, res) => {
     res.status(204);
   }
 
-  // if (!descripcion || !estado || !id_marca) {
-
-  // } else {
-  //   res.status(200).send("Se envió correctamente");
-  //   mysqlConnection.query(
-  //     `INSERT INTO linea (descripcion, estado, id_marca)VALUES ("${descripcion}","${estado}",${id_marca});`
-  //   );
-  // }
 });
 
 module.exports = router;
