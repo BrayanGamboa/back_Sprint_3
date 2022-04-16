@@ -170,6 +170,18 @@ router.post("/marca_new", (req, res) => {
   }
 });
 
+router.post("/vehiculo_new", (req, res) => {
+  const { num_placa, modelo , fch_vence_seg, fch_vence_tecno, linea, url_img} = req.body;
+  if (!num_placa || !modelo || !fch_vence_seg || !fch_vence_tecno || !linea || !url_img) {
+    res.status(409).send({ error: "Conflict" });
+  } else {
+    res.status(200).send("Se envió correctamente");
+    mysqlConnection.query(
+      `INSERT INTO vehiculo VALUES ("${num_placa}","${modelo}","${fch_vence_seg}", "${fch_vence_tecno}", ${linea}, "${url_img}");`
+    );
+  }
+});
+
 router.put("/vehiculo_update/:placa", (req, res) => {
   const { placa } = req.params;
   const { modelo, fch_vence_seg, fch_vence_tecno, linea, url_img } = req.body;
